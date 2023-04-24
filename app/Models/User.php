@@ -30,4 +30,28 @@ class User extends Authenticatable
     protected $hidden = [
         'password'
     ];
+
+    public function favorite_products()
+    {
+        return $this->hasManyThrough(
+            'App\Models\Product',
+            'App\Models\Favorite',
+            'user',
+            'id',
+            'id',
+            'product'
+        );
+    }
+
+    public function rated_products()
+    {
+        return $this->hasManyThrough(
+            'App\Models\Product',
+            'App\Models\Rating',
+            'user',
+            'id',
+            'id',
+            'product'
+        );
+    }
 }
