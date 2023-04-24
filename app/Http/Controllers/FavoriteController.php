@@ -29,7 +29,14 @@ class FavoriteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required',
+            'product_id' => 'required'
+        ]);
+
+        Favorite::create($request->all());
+
+        return new FavoriteResource($request);
     }
 
     /**
@@ -53,7 +60,8 @@ class FavoriteController extends Controller
      */
     public function update(Request $request, Favorite $favorite)
     {
-        //
+        $favorite->update($request->all());
+        return new FavoriteResource($favorite);
     }
 
     /**
@@ -61,6 +69,8 @@ class FavoriteController extends Controller
      */
     public function destroy(Favorite $favorite)
     {
-        //
+        $favorite->delete();
+
+        return null;
     }
 }

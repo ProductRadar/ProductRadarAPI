@@ -29,7 +29,15 @@ class RatingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'rating' => 'required',
+            'user_id' => 'required',
+            'product_id' => 'required'
+        ]);
+
+        Rating::create($request->all());
+
+        return new RatingResource($request);
     }
 
     /**
@@ -53,7 +61,8 @@ class RatingController extends Controller
      */
     public function update(Request $request, Rating $rating)
     {
-        //
+        $rating->update($request->all());
+        return new RatingResource($rating);
     }
 
     /**
@@ -61,6 +70,8 @@ class RatingController extends Controller
      */
     public function destroy(Rating $rating)
     {
-        //
+        $rating->delete();
+
+        return null;
     }
 }

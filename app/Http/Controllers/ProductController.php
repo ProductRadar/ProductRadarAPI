@@ -29,7 +29,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'image' => 'required',
+            'price' => 'required'
+        ]);
+
+        Product::create($request->all());
+
+        return new ProductResource($request);
     }
 
     /**
@@ -53,7 +62,8 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->update($request->all());
+        return new ProductResource($product);
     }
 
     /**
@@ -61,6 +71,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return null;
     }
 }

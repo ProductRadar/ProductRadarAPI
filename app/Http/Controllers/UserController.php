@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -29,7 +30,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'username' => 'required|unique:users',
+            'password' => 'required',
+        ]);
+
+        User::create([
+            'username' => $request->input('username'),
+            'password' => Hash::make($request->input('password'))
+        ]);
+
+        return new UserResource($request);
     }
 
     /**
@@ -53,7 +64,11 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->update([
+            'username' => $request->input('username'),
+            'password' => Hash::make($request->input('password'))
+        ]);
+        return new UserResource($user);
     }
 
     /**
@@ -61,6 +76,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return null;
     }
 }
