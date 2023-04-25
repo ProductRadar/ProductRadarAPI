@@ -18,7 +18,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/rating', \App\Http\Controllers\RatingController::class);
-Route::apiResource('/favorite', \App\Http\Controllers\FavoriteController::class);
-Route::apiResource('/product', \App\Http\Controllers\ProductController::class);
-Route::apiResource('/user', \App\Http\Controllers\UserController::class);
+Route::apiResource('/rating', \App\Http\Controllers\RatingController::class)->middleware('auth:sanctum');
+Route::apiResource('/favorite', \App\Http\Controllers\FavoriteController::class)->middleware("auth:sanctum");
+Route::apiResource('/product', \App\Http\Controllers\ProductController::class)->middleware("auth:sanctum");
+Route::group(array('namespace' => 'Front', 'prefix'=>''),function() {
+    Route::post('auth/login', '\App\Http\Controllers\AuthController@login')->name('auth.login');
+    Route::post('auth/register', '\App\Http\Controllers\AuthController@register')->name('auth.register');
+});
