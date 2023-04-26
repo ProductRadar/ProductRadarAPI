@@ -21,8 +21,8 @@ class ProductFactory extends Factory
             'name' => fake()->userName(),
             'description' => fake()->text(),
             'image' => "image location",
-            'price' => fake()->numberBetween(1, 1000),
-            'rating' => fake()->numberBetween(1, 5)
+            'price' => fake()->randomFloat(2,1, 1000),
+            'rating' => fake()->randomFloat(2,1, 5)
         ];
     }
 }

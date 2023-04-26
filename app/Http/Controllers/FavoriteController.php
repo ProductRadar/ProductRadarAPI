@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FavoriteResource;
 use App\Models\Favorite;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        //
+        return FavoriteResource::collection(Favorite::all());
     }
 
     /**
@@ -28,7 +29,14 @@ class FavoriteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|integer|exists:users,id',
+            'product_id' => 'required|integer|exists:products,id'
+        ]);
+
+        Favorite::create($request->all());
+
+        return new FavoriteResource($request);
     }
 
     /**
@@ -52,7 +60,12 @@ class FavoriteController extends Controller
      */
     public function update(Request $request, Favorite $favorite)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|integer|exists:users,id',
+            'product_id' => 'required|integer|exists:products,id'
+        ]);
+        $favorite->update($request->all());
+        return new FavoriteResource($favorite);
     }
 
     /**
@@ -60,6 +73,8 @@ class FavoriteController extends Controller
      */
     public function destroy(Favorite $favorite)
     {
-        //
+        $favorite->delete();
+
+        return null;
     }
 }

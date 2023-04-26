@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return ProductResource::collection(Product::all());
     }
 
     /**
@@ -28,7 +29,17 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'required|string',
+            'price' => 'required|numeric|between:0,99999.99',
+            'rating' => 'required|numeric|between:0,99.99',
+        ]);
+
+        Product::create($request->all());
+
+        return new ProductResource($request);
     }
 
     /**
@@ -52,7 +63,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'required|string',
+            'price' => 'required|numeric|between:0,99999.99',
+            'rating' => 'required|numeric|between:0,99.99',
+        ]);
+        $product->update($request->all());
+        return new ProductResource($product);
     }
 
     /**
@@ -60,6 +79,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return null;
     }
 }
