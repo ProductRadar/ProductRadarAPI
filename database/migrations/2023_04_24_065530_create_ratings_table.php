@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            $table->integer('rating');
+            $table->decimal('rating', 2, 2);
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('product_id')->constrained('products');
             $table->timestamps();
