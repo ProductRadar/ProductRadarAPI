@@ -18,8 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
     ];
 
@@ -29,16 +28,30 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password'
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function favorite_products()
+    {
+        return $this->hasManyThrough(
+            'App\Models\Product',
+            'App\Models\Favorite',
+            'user',
+            'id',
+            'id',
+            'product'
+        );
+    }
+
+    public function rated_products()
+    {
+        return $this->hasManyThrough(
+            'App\Models\Product',
+            'App\Models\Rating',
+            'user',
+            'id',
+            'id',
+            'product'
+        );
+    }
 }
