@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('image');
-            $table->integer('price');
-            $table->integer('rating')->nullable(true)->default(null);
+            $table->decimal('price', 10, 2);
+            $table->decimal('rating', 2, 2)->nullable(true)->default(null);
             $table->timestamps();
         });
     }
