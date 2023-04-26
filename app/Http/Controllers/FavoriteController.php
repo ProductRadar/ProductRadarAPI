@@ -30,8 +30,8 @@ class FavoriteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer',
-            'product_id' => 'required|integer'
+            'user_id' => 'required|integer|exists:users,id',
+            'product_id' => 'required|integer|exists:products,id'
         ]);
 
         Favorite::create($request->all());
@@ -61,8 +61,8 @@ class FavoriteController extends Controller
     public function update(Request $request, Favorite $favorite)
     {
         $request->validate([
-            'user_id' => 'required|integer',
-            'product_id' => 'required|integer'
+            'user_id' => 'required|integer|exists:users,id',
+            'product_id' => 'required|integer|exists:products,id'
         ]);
         $favorite->update($request->all());
         return new FavoriteResource($favorite);

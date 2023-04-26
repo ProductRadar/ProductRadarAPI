@@ -31,8 +31,8 @@ class RatingController extends Controller
     {
         $request->validate([
             'rating' => 'required|numeric|between:0,99.99',
-            'user_id' => 'required|integer',
-            'product_id' => 'required|integer'
+            'user_id' => 'required|integer|exists:users,id',
+            'product_id' => 'required|integer|exists:products,id'
         ]);
 
         Rating::create($request->all());
@@ -63,8 +63,8 @@ class RatingController extends Controller
     {
         $request->validate([
             'rating' => 'required|numeric|between:0,99.99',
-            'user_id' => 'required|integer',
-            'product_id' => 'required|integer'
+            'user_id' => 'required|integer|exists:users,id',
+            'product_id' => 'required|integer|exists:products,id'
         ]);
         $rating->update($request->all());
         return new RatingResource($rating);
