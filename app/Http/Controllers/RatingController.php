@@ -45,7 +45,7 @@ class RatingController extends Controller
      */
     public function show(Rating $rating)
     {
-        //
+        return new RatingResource($rating);
     }
 
     /**

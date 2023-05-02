@@ -44,7 +44,7 @@ class FavoriteController extends Controller
      */
     public function show(Favorite $favorite)
     {
-        //
+        return new FavoriteResource($favorite);
     }
 
     /**
