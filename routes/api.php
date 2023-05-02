@@ -28,6 +28,7 @@ Route::apiResource('/favorite', FavoriteController::class)->middleware("auth:san
 
 /* Product Controller */
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/product', [ProductController::class, 'store'])->name('product.store')->middleware("auth:sanctum");
 Route::put('/product/{product}', [ProductController::class, 'update'])->name('auth.update')->middleware("auth:sanctum");
 Route::delete('/product', [ProductController::class, 'delete'])->name('auth.delete')->middleware("auth:sanctum");
