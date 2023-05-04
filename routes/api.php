@@ -22,9 +22,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/* Rating & Favorite Controller */
+/* Rating Controller */
 Route::apiResource('/rating', RatingController::class)->middleware('auth:sanctum');
+
+/* Favorite Controller */
 Route::apiResource('/favorite', FavoriteController::class)->middleware("auth:sanctum");
+Route::get('/favorite/getUserFavorites/{user_id}', [FavoriteController::class, 'getUserFavorites'])->name('favorite.getUserRatings')->middleware("auth:sanctum");
+Route::get('/favorite/getUserFavorite/{user_id}/{product_id}', [FavoriteController::class, 'getUserFavorite'])->name('favorite.getUserRating')->middleware("auth:sanctum");
 
 /* Product Controller */
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');

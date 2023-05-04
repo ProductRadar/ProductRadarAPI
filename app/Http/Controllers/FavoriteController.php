@@ -77,4 +77,22 @@ class FavoriteController extends Controller
 
         return null;
     }
+
+    /* Custom functions */
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function getUserFavorites(int $id)
+    {
+
+        return Favorite::where('user_id', '=', $id)->get();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function getUserFavorite(int $user_id, int $product_id)
+    {
+        return Favorite::where('user_id', '=', $user_id)->where('product_id', '=', $product_id)->get();
+    }
 }
