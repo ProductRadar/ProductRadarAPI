@@ -20,7 +20,7 @@ class RatingFactory extends Factory
         $user = \App\Models\User::pluck('id')->toArray();
         $product = \App\Models\Product::pluck('id')->toArray();
         return [
-            'rating' => fake()->numberBetween(1, 5),
+            'rating' => fake()->randomFloat(2,1, 5),
             'user_id' => $this->faker->randomElement($user),
             'product_id' => $this->faker->randomElement($product)
         ];

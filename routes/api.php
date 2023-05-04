@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,17 +22,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/rating', \App\Http\Controllers\RatingController::class)->middleware('auth:sanctum');
-Route::apiResource('/favorite', \App\Http\Controllers\FavoriteController::class)->middleware("auth:sanctum");
+/* Rating & Favorite Controller */
+Route::apiResource('/rating', RatingController::class)->middleware('auth:sanctum');
+Route::apiResource('/favorite', FavoriteController::class)->middleware("auth:sanctum");
 
-Route::group(array('namespace' => 'Front', 'prefix'=>''),function() {
-    Route::get('/product', '\App\Http\Controllers\ProductController@index')->name('product.index');
-    Route::post('/product', '\App\Http\Controllers\ProductController@store')->name('product.store')->middleware("auth:sanctum");
-    Route::put('/product/{product}', '\App\Http\Controllers\ProductController@update')->name('auth.update')->middleware("auth:sanctum");
-    Route::delete('/product', '\App\Http\Controllers\ProductController@delete')->name('auth.delete')->middleware("auth:sanctum");
-});
+/* Product Controller */
+Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+Route::post('/product', [ProductController::class, 'store'])->name('product.store')->middleware("auth:sanctum");
+Route::put('/product/{product}', [ProductController::class, 'update'])->name('auth.update')->middleware("auth:sanctum");
+Route::delete('/product', [ProductController::class, 'delete'])->name('auth.delete')->middleware("auth:sanctum");
 
-Route::group(array('namespace' => 'Front', 'prefix'=>''),function() {
-    Route::post('auth/login', '\App\Http\Controllers\AuthController@login')->name('auth.login');
-    Route::post('auth/register', '\App\Http\Controllers\AuthController@register')->name('auth.register');
-});
+/* Auth Controller */
+Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('auth/register', [AuthController::class, 'register'])->name('auth.register');
+
