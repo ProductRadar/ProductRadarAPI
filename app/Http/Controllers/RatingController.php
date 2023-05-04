@@ -79,4 +79,27 @@ class RatingController extends Controller
 
         return null;
     }
+
+    /* Custom functions */
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function getUserRatings(int $id)
+    {
+
+        return Rating::where('user_id', '=', $id)->get();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function getUserRating(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|integer',
+            'product_id' => 'required|integer'
+        ]);
+
+        return Rating::where('user_id', '=', $request['user_id'])->where('product_id', '=', $request['product_id'])->get();
+    }
 }
