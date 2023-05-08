@@ -80,7 +80,7 @@ class FavoriteController extends Controller
 
     /* Custom functions */
     /**
-     * Get user ratings by logged-in user id
+     * Get user favorites by logged-in user id
      */
     public function getUserFavorites(Request $request)
     {
@@ -90,7 +90,7 @@ class FavoriteController extends Controller
     }
 
     /**
-     * Get a specific rating by logged-in user id and product id
+     * Get a specific favorite by logged-in user id and product id
      */
     public function getUserFavorite(Request $request, int $product_id)
     {
