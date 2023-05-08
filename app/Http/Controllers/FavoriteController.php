@@ -80,19 +80,22 @@ class FavoriteController extends Controller
 
     /* Custom functions */
     /**
-     * Remove the specified resource from storage.
+     * Get user ratings by logged-in user id
      */
-    public function getUserFavorites(int $id)
+    public function getUserFavorites(Request $request)
     {
-
-        return Favorite::where('user_id', '=', $id)->get();
+        $user_id = $request->user()['id'];
+        $rating = Favorite::where('user_id', '=', $user_id)->get();
+        return FavoriteResource::collection($rating);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Get a specific rating by logged-in user id and product id
      */
-    public function getUserFavorite(int $user_id, int $product_id)
+    public function getUserFavorite(Request $request, int $product_id)
     {
-        return Favorite::where('user_id', '=', $user_id)->where('product_id', '=', $product_id)->get();
+        $user_id = $request->user()['id'];
+        $rating = Favorite::where('user_id', '=', $user_id)->where('product_id', '=', $product_id)->get();
+        return FavoriteResource::collection($rating);
     }
 }
