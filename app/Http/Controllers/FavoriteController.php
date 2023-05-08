@@ -77,4 +77,25 @@ class FavoriteController extends Controller
 
         return null;
     }
+
+    /* Custom functions */
+    /**
+     * Get user favorites by logged-in user id
+     */
+    public function getUserFavorites(Request $request)
+    {
+        $user_id = $request->user()['id'];
+        $rating = Favorite::where('user_id', '=', $user_id)->get();
+        return FavoriteResource::collection($rating);
+    }
+
+    /**
+     * Get a specific favorite by logged-in user id and product id
+     */
+    public function getUserFavorite(Request $request, int $product_id)
+    {
+        $user_id = $request->user()['id'];
+        $rating = Favorite::where('user_id', '=', $user_id)->where('product_id', '=', $product_id)->get();
+        return FavoriteResource::collection($rating);
+    }
 }

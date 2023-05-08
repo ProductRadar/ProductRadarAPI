@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->get('/getUserRating/{product_id}', [RatingCon
 
 /* Favorite Controller */
 Route::apiResource('/favorite', FavoriteController::class)->middleware("auth:sanctum");
+Route::middleware('auth:sanctum')->get('/getUserFavorites', [FavoriteController::class, 'getUserFavorites'])->name('favorite.getUserFavorites');
+Route::middleware('auth:sanctum')->get('/getUserFavorite/{product_id}', [FavoriteController::class, 'getUserFavorite'])->name('favorite.getUserFavorite');
 
 /* Product Controller */
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
