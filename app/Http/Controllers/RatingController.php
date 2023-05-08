@@ -79,4 +79,25 @@ class RatingController extends Controller
 
         return null;
     }
+
+    /* Custom functions */
+    /**
+     * Get user ratings by logged-in user id
+     */
+    public function getUserRatings(Request $request)
+    {
+        $user_id = $request->user()['id'];
+        $rating = Rating::where('user_id', '=', $user_id)->get();
+        return RatingResource::collection($rating);
+    }
+
+    /**
+     * Get a specific rating by logged-in user id and product id
+     */
+    public function getUserRating(Request $request, int $product_id)
+    {
+        $user_id = $request->user()['id'];
+        $rating = Rating::where('user_id', '=', $user_id)->where('product_id', '=', $product_id)->get();
+        return RatingResource::collection($rating);
+    }
 }
