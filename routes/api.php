@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('/rating', RatingController::class)->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->get('/getUserRatings', [RatingController::class, 'getUserRatings'])->name('rating.getUserRatings');
 Route::middleware('auth:sanctum')->get('/getUserRating/{product_id}', [RatingController::class, 'getUserRating'])->name('rating.getUserRating');
+Route::get('rating/getProductRating/{product_id}', [RatingController::class, 'getProductRating'])->name('rating.getProductRating');
 
 /* Favorite Controller */
 Route::apiResource('/favorite', FavoriteController::class)->middleware("auth:sanctum");

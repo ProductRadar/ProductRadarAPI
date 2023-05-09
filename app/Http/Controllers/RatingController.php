@@ -100,4 +100,13 @@ class RatingController extends Controller
         $rating = Rating::where('user_id', '=', $user_id)->where('product_id', '=', $product_id)->get();
         return RatingResource::collection($rating);
     }
+
+    /**
+     * Get a specific rating by product id
+     */
+    public function getProductRating( int $product_id)
+    {
+        $rating = Rating::where('product_id', '=', $product_id)->get();
+        return RatingResource::collection($rating);
+    }
 }
