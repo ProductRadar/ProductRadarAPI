@@ -58,7 +58,7 @@ class RatingController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * 
+     *
      * @param Request $request
      * @param Rating $rating
      * @return RatingResource
@@ -67,13 +67,15 @@ class RatingController extends Controller
     {
         $request->validate([
             'rating' => 'required|numeric|between:0,99.99',
-            'user_id' => 'required|integer|exists:users,id',
             'product_id' => 'required|integer|exists:products,id'
         ]);
 
+        // Gets the user that made the request
+        $user_id = $request->user()['id'];
+
         // If user_id and product_id exists update the rating otherwise create it
-        $rating->updateOrCreate(
-            ['user_id' => $request->input('user_id'), 'product_id' => $request->input('product_id')],
+        $rating = $rating->updateOrCreate(
+            ['user_id' => $user_id, 'product_id' => $request->input('product_id')],
             ['rating' => $request->input('rating')]
         );
 
