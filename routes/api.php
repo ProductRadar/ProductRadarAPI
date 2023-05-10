@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('/rating', RatingController::class)->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->get('/getUserRatings', [RatingController::class, 'getUserRatings'])->name('rating.getUserRatings');
 Route::middleware('auth:sanctum')->get('/getUserRating/{product_id}', [RatingController::class, 'getUserRating'])->name('rating.getUserRating');
-Route::get('rating/getProductRating/{product_id}', [RatingController::class, 'getProductRating'])->name('rating.getProductRating');
 
 /* Favorite Controller */
 Route::apiResource('/favorite', FavoriteController::class)->middleware("auth:sanctum");
@@ -39,6 +39,9 @@ Route::get('/product/{product}', [ProductController::class, 'show'])->name('prod
 Route::post('/product', [ProductController::class, 'store'])->name('product.store')->middleware("auth:sanctum");
 Route::put('/product/{product}', [ProductController::class, 'update'])->name('auth.update')->middleware("auth:sanctum");
 Route::delete('/product', [ProductController::class, 'delete'])->name('auth.delete')->middleware("auth:sanctum");
+
+/*  Search product  */
+Route::get('/search/{search}', [SearchController::class, 'searchProduct'])->name('product.search');
 
 /* Auth Controller */
 Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');

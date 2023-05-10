@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\RatingResource;
+use App\Models\Product;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 
@@ -58,15 +59,27 @@ class RatingController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param Rating $rating
+     * @return RatingResource
      */
-    public function update(Request $request, Rating $rating)
+    public function update(Request $request, Rating $rating): RatingResource
     {
         $request->validate([
             'rating' => 'required|numeric|between:0,99.99',
-            'user_id' => 'required|integer|exists:users,id',
             'product_id' => 'required|integer|exists:products,id'
         ]);
-        $rating->update($request->all());
+
+        // Gets the user that made the request
+        $user_id = $request->user()['id'];
+
+        // If user_id and product_id exists update the rating otherwise create it
+        $rating = $rating->updateOrCreate(
+            ['user_id' => $user_id, 'product_id' => $request->input('product_id')],
+            ['rating' => $request->input('rating')]
+        );
+
         return new RatingResource($rating);
     }
 
@@ -98,15 +111,6 @@ class RatingController extends Controller
     {
         $user_id = $request->user()['id'];
         $rating = Rating::where('user_id', '=', $user_id)->where('product_id', '=', $product_id)->get();
-        return RatingResource::collection($rating);
-    }
-
-    /**
-     * Get a specific rating by product id
-     */
-    public function getProductRating( int $product_id)
-    {
-        $rating = Rating::where('product_id', '=', $product_id)->get();
         return RatingResource::collection($rating);
     }
 }
