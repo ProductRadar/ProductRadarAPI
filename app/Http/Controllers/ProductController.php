@@ -34,12 +34,12 @@ class ProductController extends Controller
             'description' => 'required|string',
             'image' => 'required|string',
             'price' => 'required|numeric|between:0,99999.99',
-            'rating' => 'required|numeric|between:0,99.99',
+            'rating' => 'numeric|between:0,99.99',
         ]);
 
-        Product::create($request->all());
+        $product = Product::create($request->all());
 
-        return new ProductResource($request);
+        return new ProductResource($product);
     }
 
     /**
@@ -68,7 +68,7 @@ class ProductController extends Controller
             'description' => 'required|string',
             'image' => 'required|string',
             'price' => 'required|numeric|between:0,99999.99',
-            'rating' => 'required|numeric|between:0,99.99',
+            'rating' => 'numeric|between:0,99.99',
         ]);
         $product->update($request->all());
         return new ProductResource($product);
