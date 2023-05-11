@@ -91,7 +91,7 @@ class FavoriteController extends Controller
             return response()->json("Record not found");
         }
 
-        return null;
+        return response()->json(["Record deleted"]);
     }
 
     /* Custom functions */
