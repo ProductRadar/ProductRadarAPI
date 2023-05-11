@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -37,7 +38,12 @@ class AuthController extends Controller
         }
 
         $user = User::where('username', $request['username'])->firstOrFail();
-        $token = $user->createToken('authToken')->plainTextToken;
+
+        // get current time and add an hour
+        $expirationsDate = Carbon::now()->addHour();
+
+        // create a token
+        $token = $user->createToken('authToken', ['*'], $expirationsDate)->plainTextToken;
 
         return response()->json([
             'access_token' => $token,
