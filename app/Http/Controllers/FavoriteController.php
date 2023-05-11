@@ -30,13 +30,16 @@ class FavoriteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
             'product_id' => 'required|integer|exists:products,id'
         ]);
 
-        Favorite::create($request->all());
+        // Gets the user id
+        $user_id = $request->user()['id'];
 
-        return new FavoriteResource($request);
+        // Add the favorite, if there is not one, since this table is only supposed to hold the favorite
+        $favorite = Favorite::firstOrCreate(['user_id' => $user_id, 'product_id' => $request->product_id]);
+
+        return new FavoriteResource($favorite);
     }
 
     /**
@@ -71,9 +74,22 @@ class FavoriteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Favorite $favorite)
+    public function destroy(Request $request)
     {
-        $favorite->delete();
+        $request->validate([
+            'product_id' => 'required|integer|exists:products,id'
+        ]);
+        // Gets the user id of the requester
+        $user_id = $request->user()['id'];
+
+        // Try and delete a favorite
+        try {
+            // finds the first result or throws an NotFoundException
+            $favoriteTobeDeleted = Favorite::where('user_id', '=', $user_id)->where('product_id', '=', $request->product_id)->firstOrFail();
+            $favoriteTobeDeleted->delete();
+        }catch (\Exception $e){
+            return response()->json("Record not found");
+        }
 
         return null;
     }

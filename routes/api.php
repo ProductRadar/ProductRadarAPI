@@ -19,28 +19,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+/* Group to hold all protected routes */
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    /* Get current user */
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    /* Rating controller */
+    Route::apiResource('/rating', RatingController::class);
+    /* Product controller */
+    Route::apiResource('/product', ProductController::class);
+    /* Favorite controller */
+    Route::apiResource('/favorite', FavoriteController::class);
+
+    /* Custom rating routes */
+    Route::get('/getUserRatings', [RatingController::class, 'getUserRatings'])->name('rating.getUserRatings');
+    Route::get('/getUserRating/{product_id}', [RatingController::class, 'getUserRating'])->name('rating.getUserRating');
+
+    /* Custom favorite routes */
+    Route::get('/getUserFavorites', [FavoriteController::class, 'getUserFavorites'])->name('favorite.getUserFavorites');
+    Route::get('/getUserFavorite/{product_id}', [FavoriteController::class, 'getUserFavorite'])->name('favorite.getUserFavorite');
+
+    /* Overwrites default delete route for favorite */
+    Route::delete('/favorite', [FavoriteController::class, 'destroy'])->name('favorite.destroy');
 });
 
-/* Rating Controller */
-Route::apiResource('/rating', RatingController::class)->middleware('auth:sanctum');
-Route::middleware('auth:sanctum')->get('/getUserRatings', [RatingController::class, 'getUserRatings'])->name('rating.getUserRatings');
-Route::middleware('auth:sanctum')->get('/getUserRating/{product_id}', [RatingController::class, 'getUserRating'])->name('rating.getUserRating');
-
-/* Favorite Controller */
-Route::apiResource('/favorite', FavoriteController::class)->middleware("auth:sanctum");
-Route::middleware('auth:sanctum')->get('/getUserFavorites', [FavoriteController::class, 'getUserFavorites'])->name('favorite.getUserFavorites');
-Route::middleware('auth:sanctum')->get('/getUserFavorite/{product_id}', [FavoriteController::class, 'getUserFavorite'])->name('favorite.getUserFavorite');
+######################### Unprotected routes #########################
 
 /* Product Controller */
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
-Route::post('/product', [ProductController::class, 'store'])->name('product.store')->middleware("auth:sanctum");
-Route::put('/product/{product}', [ProductController::class, 'update'])->name('auth.update')->middleware("auth:sanctum");
-Route::delete('/product', [ProductController::class, 'delete'])->name('auth.delete')->middleware("auth:sanctum");
 
-/*  Search product  */
+/* Search product */
 Route::get('/search/{search}', [SearchController::class, 'searchProduct'])->name('product.search');
 
 /* Auth Controller */
