@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\RatingResource;
 use App\Models\Product;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -82,5 +84,18 @@ class ProductController extends Controller
         $product->delete();
 
         return null;
+    }
+
+    /* Custom functions */
+    /**
+     * get all ratings and average it
+     */
+    public function average(Request $request, Product $product)
+    {
+        $ratings = Rating::where('product_id', '=', $product->id)->get();
+        $averageRating = $ratings->avg('rating');
+        $request["rating"] = $averageRating;
+        $product->update($request->all());
+        return new ProductResource($product);
     }
 }
