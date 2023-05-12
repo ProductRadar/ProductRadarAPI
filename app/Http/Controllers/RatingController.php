@@ -81,15 +81,10 @@ class RatingController extends Controller
             ['rating' => $request->input('rating')]
         );
 
-        $averageRating = new ProductController;
         $product = Product::where("id", $request->product_id)->first();
-        //$product = new ProductResource($request->product_id);
-        $averageRating->updateAverage($product);
 
-        /*
-        $product = Product::class->get(intval($request->product_id));
-        ProductController::updateAverage($product);
-*/
+        $averageProductRating = new ProductController;
+        $averageProductRating->updateAverageRating($product);
 
         return new RatingResource($rating);
     }

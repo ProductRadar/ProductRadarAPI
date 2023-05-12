@@ -90,7 +90,7 @@ class ProductController extends Controller
     /**
      * get all ratings and average it
      */
-    public function updateAverage(Product $product): ProductResource
+    public function updateAverageRating(Product $product): ProductResource
     {
         $ratings = Rating::where('product_id', '=', $product->id)->get();
         $averageRating = $ratings->avg('rating');
