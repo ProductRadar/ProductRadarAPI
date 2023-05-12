@@ -90,12 +90,11 @@ class ProductController extends Controller
     /**
      * get all ratings and average it
      */
-    public function average(Request $request, Product $product)
+    public function updateAverage(Product $product): ProductResource
     {
         $ratings = Rating::where('product_id', '=', $product->id)->get();
         $averageRating = $ratings->avg('rating');
-        $request["rating"] = $averageRating;
-        $product->update($request->all());
+        $product->update(['rating' => $averageRating]);
         return new ProductResource($product);
     }
 }

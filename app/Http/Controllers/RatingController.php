@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\RatingResource;
+use App\Http\Controllers\ProductController;
 use App\Models\Product;
 use App\Models\Rating;
 use Illuminate\Http\Request;
@@ -79,6 +80,16 @@ class RatingController extends Controller
             ['user_id' => $user_id, 'product_id' => $request->input('product_id')],
             ['rating' => $request->input('rating')]
         );
+
+        $averageRating = new ProductController;
+        $product = Product::where("id", $request->product_id)->first();
+        //$product = new ProductResource($request->product_id);
+        $averageRating->updateAverage($product);
+
+        /*
+        $product = Product::class->get(intval($request->product_id));
+        ProductController::updateAverage($product);
+*/
 
         return new RatingResource($rating);
     }

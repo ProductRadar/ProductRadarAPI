@@ -35,7 +35,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('/favorite', FavoriteController::class);
 
     /* Custom product routes */
-    Route::get('/product/average/{product}', [ProductController::class, 'average'])->name('product.average');
+    Route::put('/product/average/{product}', [ProductController::class, 'updateAverage'])->name('product.updateAverage');
 
     /* Custom rating routes */
     Route::get('/getUserRatings', [RatingController::class, 'getUserRatings'])->name('rating.getUserRatings');
