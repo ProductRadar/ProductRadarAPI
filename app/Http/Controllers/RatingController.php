@@ -62,10 +62,9 @@ class RatingController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param Rating $rating
      * @return RatingResource
      */
-    public function update(Request $request, Rating $rating): RatingResource
+    public function update(Request $request): RatingResource
     {
         $request->validate([
             'rating' => 'required|numeric|between:0,99.99',
@@ -76,15 +75,15 @@ class RatingController extends Controller
         $user_id = $request->user()['id'];
 
         // If user_id and product_id exists update the rating otherwise create it
-        $rating = $rating->updateOrCreate(
+        $rating = Rating::updateOrCreate(
             ['user_id' => $user_id, 'product_id' => $request->input('product_id')],
             ['rating' => $request->input('rating')]
         );
 
         $product = Product::where("id", $request->product_id)->first();
 
-        $averageProductRating = new ProductController;
-        $averageProductRating->updateAverageRating($product);
+        $productController = new ProductController;
+        $productController->updateAverageRating($product);
 
         return new RatingResource($rating);
     }
