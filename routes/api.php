@@ -46,7 +46,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getUserFavorite/{product_id}', [FavoriteController::class, 'getUserFavorite'])->name('favorite.getUserFavorite');
 
     /* Overwrites default delete route for favorite */
-    Route::delete('/favorite', [FavoriteController::class, 'destroy'])->name('favorite.destroy');
+    Route::delete('/favorite', [FavoriteController::class, 'destroy']);//->name('favorite.destroy');
+
+    /* Overwrites default update route for rating */
+    Route::put('/rating', [RatingController::class, 'update']);//->name('rating.update');
 });
 
 ######################### Unprotected routes #########################
