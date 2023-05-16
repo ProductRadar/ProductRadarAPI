@@ -61,13 +61,21 @@ class FavoriteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Favorite $favorite)
+    public function update(Request $request): FavoriteResource
     {
         $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
             'product_id' => 'required|integer|exists:products,id'
         ]);
-        $favorite->update($request->all());
+
+        // Gets the user that made the request
+        $user_id = $request->user()['id'];
+
+        // If user_id and product_id exists update the rating otherwise create it
+        $favorite = Favorite::updateOrCreate(
+            ['user_id' => $user_id, 'product_id' => $request->input('product_id')]
+        );
+
+
         return new FavoriteResource($favorite);
     }
 
@@ -87,7 +95,7 @@ class FavoriteController extends Controller
             // finds the first result or throws an NotFoundException
             $favoriteTobeDeleted = Favorite::where('user_id', '=', $user_id)->where('product_id', '=', $request->product_id)->firstOrFail();
             $favoriteTobeDeleted->delete();
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json("Record not found");
         }
 
