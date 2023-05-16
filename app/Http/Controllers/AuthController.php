@@ -22,7 +22,12 @@ class AuthController extends Controller
             'password' => Hash::make($post_data['password']),
         ]);
 
-        $token = $user->createToken('authToken')->plainTextToken;
+
+        // get current time and add an hour
+        $expirationsDate = Carbon::now()->addHour();
+
+        // create a token
+        $token = $user->createToken('authToken', ['*'], $expirationsDate)->plainTextToken;
 
         return response()->json([
             'access_token' => $token,
