@@ -48,6 +48,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     /* Overwrites default delete route for favorite */
     Route::delete('/favorite', [FavoriteController::class, 'destroy']);//->name('favorite.destroy');
 
+    /* Overwrites default update route for favorite */
+    Route::put('/favorite', [FavoriteController::class, 'update']);//->name('favorite.update');
+
     /* Overwrites default update route for rating */
     Route::put('/rating', [RatingController::class, 'update']);//->name('rating.update');
 });
